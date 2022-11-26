@@ -10,4 +10,5 @@ type Bucket struct {
 	Region      string `json:"region"`
 	CreatedBy   string `json:"account_id"`
 	BucketType  string `json:"bucket_type"`
+	Versioning  string `json:"versioning"`
 }
