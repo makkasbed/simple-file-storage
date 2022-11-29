@@ -10,7 +10,7 @@ import (
 var RootCmd = &cobra.Command{
 	Use:   "sfs",
 	Short: "SFS is a simple file storage service similar to AWS s3",
-	Long:  `SFS will help you to create buckets, manage buckets, upload files and delete files`,
+	Long:  `SFS helps you to create buckets, manage buckets, upload files and delete files`,
 }
 
 func Execute() {
