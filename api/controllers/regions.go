@@ -28,10 +28,54 @@ func CreateRegion(r models.Region) int {
 	return int(rows)
 }
 func ListRegions() []models.Region {
-	return nil
+	db, err := sql.Open("mysql", user+":"+passwd+"@tcp("+dbhost+")/"+dbname)
+
+	defer db.Close()
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	regions := []models.Region{}
+
+	results, err := db.Query("select * from tbregions order by name asc, created_at desc")
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	if results.Next() {
+		var region models.Region
+
+		err := results.Scan(&region.Id, &region.Name, &region.ShortName, &region.CreatedAt, &region.Status)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		regions = append(regions, region)
+	}
+
+	return regions
 }
-func ListRegion(id string) models.Region {
-	var region models.Region
+func ListRegion(id string) *models.Region {
+	region := &models.Region{}
+	db, err := sql.Open("mysql", user+":"+passwd+"@tcp("+dbhost+")/"+dbname)
+
+	defer db.Close()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	results, err := db.Query("SELECT * FROM tbregions where id=?", id)
+	if err != nil {
+		fmt.Println("Err", err.Error())
+	}
+
+	if results.Next() {
+
+		err = results.Scan(&region.Id, &region.Name, &region.ShortName, &region.CreatedAt, &region.Status)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	}
 
 	return region
 }
