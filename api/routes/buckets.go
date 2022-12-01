@@ -23,7 +23,7 @@ func ListBuckets(c *gin.Context) {
 	id := c.Param("id")
 
 	bucket := controllers.ListBuckets(id)
-	if bucket != nil {
+	if bucket == nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.IndentedJSON(http.StatusOK, bucket)
@@ -34,7 +34,7 @@ func ListBucket(c *gin.Context) {
 	id := c.Param("id")
 
 	bucket := controllers.ListBucket(id)
-	if bucket != nil {
+	if bucket == nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
 		c.IndentedJSON(http.StatusOK, bucket)
