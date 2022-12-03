@@ -77,14 +77,14 @@ func ListAccount(id string) *models.Account {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbaccount where id=?", id)
+	results, err := db.Query("SELECT id,name,email,access_key,access_secret,status,password,created_at FROM tbaccount where id=?", id)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 	}
 
 	if results.Next() {
 
-		err = results.Scan(&account.Id, &account.Name, &account.Email, &account.AccessKey, &account.AccessSecret, &account.Status)
+		err = results.Scan(&account.Id, &account.Name, &account.Email, &account.AccessKey, &account.AccessSecret, &account.Status, &account.Password, &account.CreatedAt)
 		if err != nil {
 			fmt.Println(err.Error())
 
@@ -105,7 +105,7 @@ func Login(accessKey string, accessSecret string) *models.Account {
 
 	defer db.Close()
 	//fmt.Println("username ", username, id)
-	results, err := db.Query("SELECT * FROM tbaccount where access_key=? and access_secret=?", accessKey, accessSecret)
+	results, err := db.Query("SELECT id,name,email,status,access_key,access_secret,created_at,password FROM tbaccount where access_key=? and access_secret=?", accessKey, accessSecret)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 		return nil
@@ -113,7 +113,7 @@ func Login(accessKey string, accessSecret string) *models.Account {
 
 	if results.Next() {
 		fmt.Println("results")
-		err = results.Scan(&account.Id, &account.Name, &account.Email, &account.Status, &account.AccessKey, &account.AccessSecret, &account.CreatedAt)
+		err = results.Scan(&account.Id, &account.Name, &account.Email, &account.Status, &account.AccessKey, &account.AccessSecret, &account.CreatedAt, &account.Password)
 		if err != nil {
 			fmt.Println(err.Error())
 			return nil
