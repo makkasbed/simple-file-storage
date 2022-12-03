@@ -16,7 +16,7 @@ func CreateBucket(b models.Bucket) {
 
 	defer db.Close()
 
-	insert, err := db.Query("insert into tbbucket(name,description,created_at,status,url,account_id,bucket_type,versioning)values(?,?,NOW(),?,?,?,?)", b.Name, b.Description, b.Status, b.Url, b.CreatedBy, b.BucketType, b.Versioning)
+	insert, err := db.Query("insert into tbbucket(name,description,created_at,status,url,account_id,bucket_type,versioning,region)values(?,?,NOW(),?,?,?,?,?,?)", b.Name, b.Description, b.Status, b.Url, b.CreatedBy, b.BucketType, b.Versioning, b.Region)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -33,7 +33,7 @@ func ListBuckets(accountId string) []models.Bucket {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbbucket where account_id=?", accountId)
+	results, err := db.Query("SELECT id,name,description,bucket_type,created_at,account_id,versioning,region FROM tbbucket where account_id=?", accountId)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 		return nil
@@ -43,7 +43,7 @@ func ListBuckets(accountId string) []models.Bucket {
 	for results.Next() {
 		var bucket models.Bucket
 
-		err = results.Scan(&bucket.Id, &bucket.Name, &bucket.Description, &bucket.BucketType, &bucket.CreatedAt, &bucket.CreatedBy, &bucket.Versioning)
+		err = results.Scan(&bucket.Id, &bucket.Name, &bucket.Description, &bucket.BucketType, &bucket.CreatedAt, &bucket.CreatedBy, &bucket.Versioning, &bucket.Region)
 		if err != nil {
 			panic(err.Error())
 
@@ -54,6 +54,7 @@ func ListBuckets(accountId string) []models.Bucket {
 	return buckets
 }
 func ListBucket(bucketId string) *models.Bucket {
+	fmt.Println(bucketId)
 	bucket := &models.Bucket{}
 
 	db, err := sql.Open("mysql", user+":"+passwd+"@tcp("+dbhost+")/"+dbname)
@@ -65,14 +66,14 @@ func ListBucket(bucketId string) *models.Bucket {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbbucket where id=?", bucketId)
+	results, err := db.Query("SELECT id,name,description,bucket_type,created_at,account_id,versioning,region,url,status FROM tbbucket where id=?", bucketId)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 	}
 
 	if results.Next() {
 
-		err = results.Scan(&bucket.Id, &bucket.Name, &bucket.Description, &bucket.CreatedAt, &bucket.CreatedBy, &bucket.Region, &bucket.Url, &bucket.Status)
+		err = results.Scan(&bucket.Id, &bucket.Name, &bucket.Description, &bucket.BucketType, &bucket.CreatedAt, &bucket.CreatedBy, &bucket.Versioning, &bucket.Region, &bucket.Url, &bucket.Status)
 		if err != nil {
 			fmt.Println(err.Error())
 
