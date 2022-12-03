@@ -33,7 +33,7 @@ func ListBuckets(accountId string) []models.Bucket {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbbucket")
+	results, err := db.Query("SELECT * FROM tbbucket where account_id=?", accountId)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 		return nil
