@@ -33,7 +33,7 @@ func ListBuckets(accountId string) []models.Bucket {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbbuckets")
+	results, err := db.Query("SELECT * FROM tbbucket")
 	if err != nil {
 		fmt.Println("Err", err.Error())
 		return nil
@@ -65,7 +65,7 @@ func ListBucket(bucketId string) *models.Bucket {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbbuckets where id=?", bucketId)
+	results, err := db.Query("SELECT * FROM tbbucket where id=?", bucketId)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 	}
@@ -89,7 +89,7 @@ func DeleteBucket(bucketId string) {
 	}
 	defer db.Close()
 
-	deleted, err := db.Exec("delete from tbbuckets where id=?", bucketId)
+	deleted, err := db.Exec("delete from tbbucket where id=?", bucketId)
 
 	if err != nil {
 		panic(err.Error())

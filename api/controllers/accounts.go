@@ -46,7 +46,7 @@ func ListAccounts(t models.Account) []models.Account {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbaccounts")
+	results, err := db.Query("SELECT * FROM tbaccount")
 	if err != nil {
 		fmt.Println("Err", err.Error())
 		return nil
@@ -77,7 +77,7 @@ func ListAccount(id string) *models.Account {
 
 	defer db.Close()
 
-	results, err := db.Query("SELECT * FROM tbaccounts where id=?", id)
+	results, err := db.Query("SELECT * FROM tbaccount where id=?", id)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 	}

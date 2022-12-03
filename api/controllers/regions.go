@@ -15,7 +15,7 @@ func CreateRegion(r models.Region) int {
 		fmt.Println(err.Error())
 	}
 
-	insert, err := db.Exec("insert into tbregions(name,short_name,created_at,status)values(?,?,NOW(),?)", r.Name, r.ShortName, r.Status)
+	insert, err := db.Exec("insert into tbregion(name,short_name,created_at,status)values(?,?,NOW(),?)", r.Name, r.ShortName, r.Status)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -37,7 +37,7 @@ func ListRegions() []models.Region {
 	}
 	regions := []models.Region{}
 
-	results, err := db.Query("select * from tbregions order by name asc, created_at desc")
+	results, err := db.Query("select * from tbregion order by name asc, created_at desc")
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -64,7 +64,7 @@ func ListRegion(id string) *models.Region {
 		fmt.Println(err.Error())
 	}
 
-	results, err := db.Query("SELECT * FROM tbregions where id=?", id)
+	results, err := db.Query("SELECT * FROM tbregion where id=?", id)
 	if err != nil {
 		fmt.Println("Err", err.Error())
 	}

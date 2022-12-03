@@ -15,7 +15,7 @@ func CreateFile(t models.File) int {
 	}
 
 	defer db.Close()
-	insert, err := db.Exec("insert into tbfiles(name,bucket_id,created_at,public,last_access,file_type,file_location)values(?,?,NOW(),?,NOW(),?,?)", t.Name, t.Bucket, t.Public, t.FileType, t.FileLocation)
+	insert, err := db.Exec("insert into tbfile(name,bucket_id,created_at,public,last_access,file_type,file_location)values(?,?,NOW(),?,NOW(),?,?)", t.Name, t.Bucket, t.Public, t.FileType, t.FileLocation)
 
 	if err != nil {
 		panic(err.Error())
@@ -40,7 +40,7 @@ func GetFile(key string) *models.File {
 		return nil
 	}
 
-	results, err := db.Query("select * from tbfiles where name=?", key)
+	results, err := db.Query("select * from tbfile where name=?", key)
 
 	if err != nil {
 		fmt.Println("Err", err.Error())
@@ -67,7 +67,7 @@ func DeleteFile(key string) int {
 		fmt.Println(err.Error())
 	}
 
-	deleted, err := db.Exec("delete from tbfiles where name=?", key)
+	deleted, err := db.Exec("delete from tbfile where name=?", key)
 
 	if err != nil {
 		panic(err.Error())
