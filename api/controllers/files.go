@@ -41,7 +41,7 @@ func GetFile(key string) *models.File {
 		return nil
 	}
 
-	results, err := db.Query("select id,name,created_at,file_type,last_access,file_location from tbfile where bucket_id=?", key)
+	results, err := db.Query("select id,name,created_at,file_type,last_access,file_location,bucket_id from tbfile where bucket_id=?", key)
 
 	if err != nil {
 		fmt.Println("Err", err.Error())
@@ -49,7 +49,7 @@ func GetFile(key string) *models.File {
 
 	if results.Next() {
 
-		err = results.Scan(&file.Id, &file.Name, &file.CreatedAt, &file.FileType, &file.LastAccess, &file.FileLocation)
+		err = results.Scan(&file.Id, &file.Name, &file.CreatedAt, &file.FileType, &file.LastAccess, &file.FileLocation, &file.Bucket)
 		if err != nil {
 			fmt.Println(err.Error())
 
