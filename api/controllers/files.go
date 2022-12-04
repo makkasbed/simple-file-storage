@@ -29,6 +29,7 @@ func CreateFile(t models.File) int {
 
 }
 func GetFile(key string) *models.File {
+	print(key)
 	file := &models.File{}
 
 	db, err := sql.Open("mysql", user+":"+passwd+"@tcp("+dbhost+")/"+dbname)
@@ -40,7 +41,7 @@ func GetFile(key string) *models.File {
 		return nil
 	}
 
-	results, err := db.Query("select * from tbfile where name=?", key)
+	results, err := db.Query("select id,name,created_at,file_type,last_access,file_location from tbfile where bucket_id=?", key)
 
 	if err != nil {
 		fmt.Println("Err", err.Error())
