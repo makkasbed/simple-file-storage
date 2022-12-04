@@ -20,7 +20,7 @@ func CreateFile(c *gin.Context) {
 }
 
 func GetFile(c *gin.Context) {
-	id := c.Param("key")
+	id := c.Param("id")
 	file := controllers.GetFile(id)
 
 	if file == nil {
